@@ -204,7 +204,8 @@ button.pill:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink);
 .rvp.mut { border-color: var(--sun); box-shadow: 0 0 12px #ffd84a99; } .rvp.mut i { background: var(--sun); }
 .rv-rew { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); text-align: left; margin-top: 4px; }
 .rv-rew b { font: 400 17px var(--display); color: var(--sun); } .rv-rew span { flex: 1; line-height: 1.2; }
-.rv-btns { display: flex; gap: 10px; align-items: center; } .rv-btns .btn { flex: none; } .rv-btns .btn.grow { flex: 1; }
+.rv-btns { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; } .rv-btns .btn { flex: none; } .rv-btns .btn.grow { flex: 1; }
+.rv-full .rv-btns .btn { flex: 1 1 140px; }
 .rv-full p { font-weight: 800; margin-bottom: 6px; font-size: 14px; }
 
 /* ---------- rush lobby ---------- */
@@ -344,7 +345,7 @@ button.pill:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink);
   .tray { flex: 1; min-height: 0; }
   .tray-g { grid-auto-flow: row; grid-template-rows: none; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-columns: auto; overflow-x: hidden; overflow-y: auto; touch-action: pan-y; align-content: start; padding: 10px 14px 14px; }
   .card { width: auto; height: 96px; } .card .portrait { width: 64px; height: 64px; }
-  .reveal { margin: auto 14px; }
+  .reveal { margin: auto 14px; align-self: stretch; min-width: 0; }
   .tabbar { max-width: 640px; margin-bottom: 14px; }
   .tab { flex-direction: row; gap: 6px; padding: 8px 4px; justify-content: center; } .tab-i { transform: none !important; }
   .tab .icon { width: 24px; height: 24px; }
@@ -373,3 +374,6 @@ button.pill:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink);
 html[data-motion='reduced'] *, html[data-motion='reduced'] *::before, html[data-motion='reduced'] *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 html[data-motion='reduced'] .mash.ready { animation: none; }
 .ctl-clear .icon path, .sc-x .icon path { stroke: #fff; }
+
+.crash { min-height: 100dvh; display: grid; place-content: center; gap: 14px; text-align: center; padding: 24px; background: var(--bg, #1a0b38); color: #fff; }
+.crash h1 { font: 400 32px var(--display); color: var(--sun); }
