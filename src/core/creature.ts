@@ -71,7 +71,7 @@ export interface FusionInput {
   seed: number
   born: string
   pool: ReadonlySet<string>
-  boost?: boolean
+  boost?: boolean | number
   /** names already in the pen/codex, so we do not hand out duplicates */
   takenNames?: ReadonlySet<string>
   /** mythics the player has already discovered: they only echo back now and then */
@@ -85,7 +85,7 @@ export function fuseCreatures(inp: FusionInput): FusionOutcome {
   const rng = new Rng(inp.seed)
   const ga = genomeOf(inp.a)
   const gb = genomeOf(inp.b)
-  const opts: FuseOptions = { pool: inp.pool, boost: inp.boost ? 0.3 : 0 }
+  const opts: FuseOptions = { pool: inp.pool, boost: typeof inp.boost === 'number' ? inp.boost : inp.boost ? 0.3 : 0 }
 
   let result = fuse(ga, gb, rng, opts)
   if (inp.guarantee) {

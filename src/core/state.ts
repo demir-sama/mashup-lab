@@ -15,6 +15,8 @@ export interface Settings {
   /** 'auto' follows the OS preference */
   motion: 'auto' | 'full' | 'reduced'
   fastFusion: boolean
+  /** opt-in local reminder when the daily gift is ready */
+  remind: boolean
 }
 
 export interface CodexSpecies {
@@ -68,6 +70,22 @@ export interface Meta {
   challengesWon: number
 }
 
+export interface RushMeta {
+  day: string
+  /** daily rush attempts used today */
+  attempts: number
+  /** extra attempts earned today (rewarded ads) */
+  extra: number
+  bestDaily: number
+  bestAll: number
+  bestAllCode: string
+  bestAllName: string
+  played: number
+}
+export const RUSH_FREE_ATTEMPTS = 2
+export const emptyRush = (): RushMeta => ({ day: '', attempts: 0, extra: 0, bestDaily: 0, bestAll: 0, bestAllCode: '', bestAllName: '', played: 0 })
+export const rushAttemptsLeft = (r: RushMeta, today: string) => (r.day === today ? RUSH_FREE_ATTEMPTS + r.extra - r.attempts : RUSH_FREE_ATTEMPTS)
+
 export interface GameState {
   v: 1
   settings: Settings
@@ -77,6 +95,7 @@ export interface GameState {
   codex: Codex
   daily: DailyState
   streak: StreakState
+  rush: RushMeta
 }
 
 export const PEN_BASE = 12
@@ -88,7 +107,7 @@ export const MAX_ADS_PER_DAY = 5
 export const RECYCLE_RATE = 0.12
 
 export function defaultSettings(): Settings {
-  return { music: true, sfx: true, haptics: true, motion: 'auto', fastFusion: false }
+  return { music: true, sfx: true, haptics: true, motion: 'auto', fastFusion: false, remind: false }
 }
 
 export function newGame(now: number, day: string): GameState {
@@ -117,6 +136,7 @@ export function newGame(now: number, day: string): GameState {
     codex,
     daily: { day: '', orders: {}, fusions: 0, bestFright: 0, bestCode: '', bestName: '', giftClaimed: false },
     streak: emptyStreak(),
+    rush: emptyRush(),
   }
 }
 
@@ -335,6 +355,7 @@ export function adsLeft(state: GameState, today: string): number {
 export function grantAdMutagen(state: GameState, today: string): GameState {
   const s = structuredClone(state) as GameState
   if (s.eco.ads.day !== today) s.eco.ads = { day: today, n: 0 }
+  if (s.rush.day !== today) s.rush = { ...s.rush, day: today, attempts: 0, extra: 0, bestDaily: 0 }
   s.eco.ads.n++
   s.eco.mutagens++
   return s
@@ -359,6 +380,7 @@ export function rollDay(state: GameState, today: string): DayRoll {
     for (const o of dailyOrders(today)) s.daily.orders[o.id] = { done: false }
   }
   if (s.eco.ads.day !== today) s.eco.ads = { day: today, n: 0 }
+  if (s.rush.day !== today) s.rush = { ...s.rush, day: today, attempts: 0, extra: 0, bestDaily: 0 }
   const giftPending = s.streak.claimed !== today
   return { state: s, streakKind: t.kind, giftPending }
 }
@@ -397,7 +419,7 @@ export function deliverOrder(state: GameState, order: Order, creatureId: string)
 
 // ---------- persistence shape ----------
 
-export const SAVE_KEYS = ['settings', 'meta', 'eco', 'pen', 'codex', 'daily', 'streak'] as const
+export const SAVE_KEYS = ['settings', 'meta', 'eco', 'pen', 'codex', 'daily', 'streak', 'rush'] as const
 
 export function serialize(state: GameState): Record<(typeof SAVE_KEYS)[number], string> {
   return {
@@ -408,6 +430,7 @@ export function serialize(state: GameState): Record<(typeof SAVE_KEYS)[number], 
     codex: JSON.stringify(state.codex),
     daily: JSON.stringify(state.daily),
     streak: JSON.stringify(state.streak),
+    rush: JSON.stringify(state.rush),
   }
 }
 
@@ -434,6 +457,7 @@ export function deserialize(raw: Partial<Record<(typeof SAVE_KEYS)[number], stri
       codex: parse('codex', base.codex),
       daily: parse('daily', base.daily),
       streak: parse('streak', base.streak),
+      rush: parse('rush', base.rush),
     }
     if (!s.eco.unlocked?.length) s.eco.unlocked = [...STARTER_PART_KEYS]
     return s

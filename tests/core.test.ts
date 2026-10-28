@@ -414,3 +414,49 @@ describe('guaranteed tutorial fusion', () => {
   })
 })
 export type { Genome }
+
+import { challengeParams, dailySeed, parseChallenge, rushApply, rushDone, rushOutcome, rushSeedFor, rushStart, RUSH_FUSIONS } from '../src/core/rush'
+describe('rush', () => {
+  it('same seed gives same start; different seeds differ', () => {
+    const a = rushStart(dailySeed('2026-11-01'), DAY)
+    const b = rushStart(dailySeed('2026-11-01'), DAY)
+    expect(a.pen.map((c) => c.code)).toEqual(b.pen.map((c) => c.code))
+    expect(a.pen).toHaveLength(6)
+    expect(rushStart(dailySeed('2026-11-02'), DAY).pen.map((c) => c.code)).not.toEqual(a.pen.map((c) => c.code))
+  })
+  it('outcomes are deterministic and independent of parent order', () => {
+    const rs = rushStart('t1', DAY)
+    const o1 = rushOutcome(rs, rs.pen[0], rs.pen[1], DAY)
+    const o2 = rushOutcome(rs, rs.pen[1], rs.pen[0], DAY)
+    expect(rushSeedFor('t1', 0, rs.pen[0], rs.pen[1])).toBe(rushSeedFor('t1', 0, rs.pen[1], rs.pen[0]))
+    expect(o1.child.fright).toBeGreaterThan(0)
+    expect(o2.child.id).toBe('f0')
+  })
+  it('runs exactly 5 fusions and tracks the best', () => {
+    let rs = rushStart('t2', DAY)
+    let n = 0
+    while (!rushDone(rs)) {
+      const a = rs.pen[n % rs.pen.length], b = rs.pen[(n + 3) % rs.pen.length]
+      rs = rushApply(rs, rushOutcome(rs, a === b ? rs.pen[(n + 1) % rs.pen.length] : a, b, DAY))
+      n++
+    }
+    expect(rs.used).toBe(RUSH_FUSIONS)
+    expect(rs.best).toBe(Math.max(...rs.pen.filter((c) => rs.log.includes(c.id)).map((c) => c.fright)))
+  })
+  it('replaying the same choices reproduces the same score', () => {
+    const play = () => {
+      let rs = rushStart('t3', DAY)
+      for (let i = 0; i < 5; i++) rs = rushApply(rs, rushOutcome(rs, rs.pen[i], rs.pen[i + 1], DAY))
+      return rs.best
+    }
+    expect(play()).toBe(play())
+  })
+  it('challenge params round-trip and reject junk', () => {
+    const p = challengeParams({ seed: 'rush-2026-11-01', target: 321, from: 'Mina', name: 'Gloopy' })
+    expect(parseChallenge(p)).toEqual({ seed: 'rush-2026-11-01', target: 321, from: 'Mina', name: 'Gloopy' })
+    expect(parseChallenge({ ...p, s: '<script>' })).toBeNull()
+    expect(parseChallenge({ ...p, t: '999999' })).toBeNull()
+    expect(parseChallenge({})).toBeNull()
+    expect(parseChallenge({ ...p, f: '<b>Eve</b>' })?.from).toBe('bEveb')
+  })
+})
