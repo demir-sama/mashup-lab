@@ -1,0 +1,22 @@
+{
+  "requiresToken": false,
+  "scoreOrder": "highest",
+  "minScore": 0,
+  "maxScore": 1000000,
+  "minDurationSec": 1,
+  "maxDurationSec": 86400,
+  "modes": {
+    "rush": { "displayName": "Fright Rush" },
+    "collector": { "displayName": "Collector" }
+  },
+  "periods": {
+    "alltime": { "displayName": "All Time", "type": "alltime" },
+    "daily": { "displayName": "Today", "type": "daily" }
+  },
+  "antiCheat": {
+    "enableRateLimit": true,
+    "enableZScoreDetection": false,
+    "minTimeBetweenSubmissionsSec": 5
+  },
+  "displaySettings": { "maxEntriesPerPage": 50 }
+}

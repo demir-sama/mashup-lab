@@ -1,0 +1,96 @@
+{
+  "items": [
+    {
+      "itemId": "pod_candy",
+      "name": "Candy Coffin Pod",
+      "description": "Cosmetic Mash-O-Matic skin. Pure style, no gameplay edge.",
+      "category": "non_consumable",
+      "price": {
+        "type": "direct_purchase",
+        "value": "tier_199"
+      },
+      "entitlements": [
+        {
+          "entitlementId": "pod_candy",
+          "quantity": 1,
+          "consumable": false
+        }
+      ],
+      "assets": {},
+      "unique": true,
+      "active": true,
+      "regions": [],
+      "refundEligible": true,
+      "refundWindowHours": 24,
+      "tags": [
+        "cosmetic",
+        "pod"
+      ],
+      "sortOrder": 1,
+      "releasedAt": null,
+      "expiresAt": null
+    },
+    {
+      "itemId": "pod_neon",
+      "name": "Neon Morgue Pod",
+      "description": "Cosmetic Mash-O-Matic skin. Pure style, no gameplay edge.",
+      "category": "non_consumable",
+      "price": {
+        "type": "direct_purchase",
+        "value": "tier_199"
+      },
+      "entitlements": [
+        {
+          "entitlementId": "pod_neon",
+          "quantity": 1,
+          "consumable": false
+        }
+      ],
+      "assets": {},
+      "unique": true,
+      "active": true,
+      "regions": [],
+      "refundEligible": true,
+      "refundWindowHours": 24,
+      "tags": [
+        "cosmetic",
+        "pod"
+      ],
+      "sortOrder": 2,
+      "releasedAt": null,
+      "expiresAt": null
+    },
+    {
+      "itemId": "pod_gilded",
+      "name": "Gilded Reliquary Pod",
+      "description": "Cosmetic Mash-O-Matic skin. Pure style, no gameplay edge.",
+      "category": "non_consumable",
+      "price": {
+        "type": "direct_purchase",
+        "value": "tier_499"
+      },
+      "entitlements": [
+        {
+          "entitlementId": "pod_gilded",
+          "quantity": 1,
+          "consumable": false
+        }
+      ],
+      "assets": {},
+      "unique": true,
+      "active": true,
+      "regions": [],
+      "refundEligible": true,
+      "refundWindowHours": 24,
+      "tags": [
+        "cosmetic",
+        "pod"
+      ],
+      "sortOrder": 3,
+      "releasedAt": null,
+      "expiresAt": null
+    }
+  ],
+  "sales": [],
+  "collections": []
+}
