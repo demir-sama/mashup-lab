@@ -1,0 +1,37 @@
+{
+  "name": "mashup-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MASH-UP LAB - a fusion-creature collector for the RUN October Jam (theme: Monster Mash).",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc --noEmit && vite build",
+    "build:preview": "tsc --noEmit && vite build --mode preview",
+    "preview": "vite preview --host",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "predeploy": "rundot predeploy",
+    "qa:shots": "node scripts/qa-shots.mjs"
+  },
+  "dependencies": {
+    "@series-inc/rundot-game-sdk": "^5.29.1",
+    "motion": "^14.7.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@fontsource-variable/nunito": "^5.3.0",
+    "@fontsource/grenze-gotisch": "^5.3.0",
+    "@fontsource/lilita-one": "^5.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "playwright-core": "^1.64.1",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^4.1.12"
+  }
+}
